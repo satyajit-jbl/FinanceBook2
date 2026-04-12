@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  .btn-primary  { @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm; }
+  .btn-secondary{ @apply btn bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 focus:ring-gray-300 shadow-sm; }
+  .btn-danger   { @apply btn bg-expense text-white hover:bg-expense-dark focus:ring-red-400 shadow-sm; }
+  .btn-success  { @apply btn bg-income text-white hover:bg-income-dark focus:ring-green-400 shadow-sm; }
+  .btn-sm       { @apply px-3 py-1.5 text-xs rounded-md; }
+  /* ── Cards ── */
+  .card { @apply bg-white rounded-xl border border-surface-200 shadow-card; }
+
+  /* ── Forms ── */
+  .input {
+    @apply w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all placeholder-gray-400 bg-white;
+  }
+  .input-error { @apply border-red-400 focus:ring-red-400; }
+  .label { @apply block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1; }
+
+  /* ── Tables — responsive ── */
+  .table-th {
+    @apply px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-surface-50 border-b border-surface-200;
+  }
+  .table-td {
+    @apply px-3 py-2.5 text-sm text-gray-700 border-b border-surface-100;
+  }
+  /* On md+ screens restore comfortable padding */
+  @screen md {
+    .table-th { @apply px-4 py-3; }
+    .table-td { @apply px-4 py-3; }
+  }
+
+  /* ── Badges ── */
+  .badge { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold; }
+
+  /* ── Amount helpers ── */
+  .amount-positive { @apply font-mono text-income font-semibold; }
+  .amount-negative { @apply font-mono text-expense font-semibold; }
+  .amount-neutral  { @apply font-mono text-gray-700 font-medium; }
+
+  /* ── Navigation ── */
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600
+           hover:bg-primary-50 hover:text-primary-700 transition-all duration-150;
+  }
+  .nav-link-active { @apply bg-primary-50 text-primary-700 font-semibold; }
+
+  /* ── Mobile bottom nav items ── */
+  .mob-nav {
+    @apply flex flex-col items-center gap-0.5 py-2 px-3 text-xs font-medium text-gray-500
+           hover:text-primary-600 transition-colors rounded-lg;
+  }
+  .mob-nav-active { @apply text-primary-600; }
+
+  /* ── Typography ── */
+  .section-title { @apply text-base font-bold text-gray-900 md:text-lg; }
+  .page-header   { @apply flex items-center justify-between mb-4 md:mb-6; }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ── Print ── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  .card { box-shadow: none; border: 1px solid #e2e8f0; }
+}
+
+/* ── Pie chart overflow fix ── */
+.recharts-wrapper { overflow: visible !important; }
+.recharts-legend-wrapper { position: relative !important; overflow: visible !important; }

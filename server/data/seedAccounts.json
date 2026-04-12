@@ -1,0 +1,1307 @@
+[
+  {
+    "accountTitle": "Opening Capital",
+    "accountNo": "",
+    "accountType": "Equity",
+    "subAccount": "Equity",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -11536739.34,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Revaluation Surplus (Equity)",
+    "accountNo": "",
+    "accountType": "Equity",
+    "subAccount": "Equity",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -904978.78,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cash in Hand",
+    "accountNo": "",
+    "accountType": "Cash",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1845.0,
+    "isCashAccount": true
+  },
+  {
+    "accountTitle": "Emergency Stock",
+    "accountNo": "",
+    "accountType": "Cash",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 3910.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "BD New Notes & Bundles",
+    "accountNo": "",
+    "accountType": "Cash",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 51952.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "JBL A/C(Dohazari)-0100024116233",
+    "accountNo": "0100055571231",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 20.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "JBL A/C(Patiya)-0100024116233",
+    "accountNo": "0100024116233",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 12.7,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "BRAC A/C 1102202585244001",
+    "accountNo": "1102202585244000",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 38383.49,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-SOUMIK(JBL SBBC)-0100246686003",
+    "accountNo": "0100246686003",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 64.7,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-NRB G(0112000264434)",
+    "accountNo": "0112000264434",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 2905.71,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-AGRNI(020013090942)",
+    "accountNo": "020013090942",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-SOMA(JBL-LDE-0100212998081)",
+    "accountNo": "0100212998081",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 98.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-SOMA(JBL-SBBL-0100245191931)",
+    "accountNo": "0100245191931",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-SOMA(SBL-New Mrk-0816901005331)",
+    "accountNo": "0816901005331",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1005.24,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SB-(SBL-New Mrk-0816901005332)",
+    "accountNo": "0816901005332",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "JBL A/C(SBBC)-0100024116233",
+    "accountNo": "0100246215311",
+    "accountType": "Savings Bank Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bkash-***771",
+    "accountNo": "01819864771",
+    "accountType": "Digital Wallet",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1826.06,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DoubleBenefit-(JBL-SBBC)-SOMA",
+    "accountNo": "0100270115742",
+    "accountType": "Fixed Deposit Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 300000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "FD-BRAC-3 Lac",
+    "accountNo": "3025852440003",
+    "accountType": "Fixed Deposit Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 300000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-SBMS-(SBL-Reaz)",
+    "accountNo": "823290000241",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 177299.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-BRAC-10k",
+    "accountNo": "3025852440005",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 157034.04,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-BRAC-20k",
+    "accountNo": "3025852440004",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 336273.58,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-BRAC-2k",
+    "accountNo": "3025852440001",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 72605.69,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-SOMA(JBL-SBBC)",
+    "accountNo": "0100268230747",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 28695.57,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "DPS-SOMA(JBL-SBBC)-2",
+    "accountNo": "0100268244985",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 24650.72,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SMART A/C-SOMA-(JBL-SBB)",
+    "accountNo": "0100285290460",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 48885.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SMART A/C-(JBL-SBB)",
+    "accountNo": "0100253652009",
+    "accountType": "DPS Account",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 100348.02,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Kamal",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 20000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Amjad",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 338164.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Subrata Telecom",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 299461.74,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Subol da",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 30000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Subrata Bol",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/R Others(Sundry Debtors)",
+    "accountNo": "",
+    "accountType": "Accounts Receivable (Lending)",
+    "subAccount": "Current Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 52901.68,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-Satyajit-LDE-30",
+    "accountNo": "2023-0455473",
+    "accountType": "Savings Certificate",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 3000000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-Soma-LDE-16",
+    "accountNo": "2025-0136031",
+    "accountType": "Savings Certificate",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1600000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-LDE-10L",
+    "accountNo": "2021-0505516",
+    "accountType": "Savings Certificate",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1000000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-M-(SBL)-Soma-15L",
+    "accountNo": "2025-0525509",
+    "accountType": "investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1500000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-5Y-SBL-7L",
+    "accountNo": "2025-0116039",
+    "accountType": "investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 700000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-M-(JBL-LDE)-Soma-14L",
+    "accountNo": "2021-0909012",
+    "accountType": "investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1400000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SP-5Y-(JBL-LDE)-1 L",
+    "accountNo": "2022-0812720",
+    "accountType": "investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 100000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Insurence-Jibon Bima-13260",
+    "accountNo": "1522160-9",
+    "accountType": "Insurence",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 204300.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Insurence-Delta Life- 10575",
+    "accountNo": "100000291839",
+    "accountType": "Insurence",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 56220.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Insurence-Jibon Bima-27520",
+    "accountNo": "00316073855",
+    "accountType": "Insurence",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 192361.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Insurence-Delta Life-SOMA-13920",
+    "accountNo": "100000339380",
+    "accountType": "Insurence",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 52335.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "BO AC - Smart Securities",
+    "accountNo": "1205900077209313",
+    "accountType": "Share",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 49.84,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "BESTHLDNG",
+    "accountNo": "",
+    "accountType": "Investments",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 34700.13,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "GPF",
+    "accountNo": "20697",
+    "accountType": "Other account",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1128766.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Prize Bond",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1500.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bornali",
+    "accountNo": "0111100125448",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 278535.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "OBA",
+    "accountNo": "0100097288504",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 127987.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "We Shopping",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 60000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Hobby(Investments)",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Coins(Investment)",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 296217.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bank Notes(Investment)",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 8402.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Rare Books(Investment)",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 41900.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Stamp Sheets & Cover of FV(Investment)",
+    "accountNo": "",
+    "accountType": "Investment",
+    "subAccount": "Investments",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 19280.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bondhukunja Project",
+    "accountNo": "0100245402834",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1190000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Flat-Avinandan",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 5300000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Jewelry",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 816000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Vehicles",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 50000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Coins",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 4773429.78,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bank Note",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 2135387.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Other Hobby Items",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 48150.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Books Collection",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 275.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Philatelic Items",
+    "accountNo": "",
+    "accountType": "Fixed Assets",
+    "subAccount": "Fixed Assets",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 560110.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cr Crd BRAC-MASTER",
+    "accountNo": "5488-9502-4635-5016",
+    "accountType": "Credit Card",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 1.23,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cr Crd BRAC-VISA",
+    "accountNo": "4321450000684317",
+    "accountType": "Credit Card",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -7986.93,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cr Crd MTB",
+    "accountNo": "4988-5100-1002-7064",
+    "accountType": "Credit Card",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -429999.56,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cr Crd EBL",
+    "accountNo": "5329-5104-0043-4958",
+    "accountType": "Credit Card",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -464749.94,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cr Crd EBL-DC",
+    "accountNo": "3609-015100-2499",
+    "accountType": "Credit Card",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -10060.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Jahid",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Avinandan",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -92740.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Tunu",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -46000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Tunu 2",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -324555.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Shamsuddin",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P OBA",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -150000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Bondhukunja",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -14786.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Prabal da",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "A/P Others(Sundry Deposit)",
+    "accountNo": "",
+    "accountType": "Borrowings",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -1.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Utility Dues",
+    "accountNo": "",
+    "accountType": "Other",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Subscription Payments",
+    "accountNo": "",
+    "accountType": "Other",
+    "subAccount": "Current Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "SOD-SOMA",
+    "accountNo": "0100283043261",
+    "accountType": "Short-term Loans",
+    "subAccount": "Short-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -37503.08,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "RC-Pinku",
+    "accountNo": "",
+    "accountType": "Short-term Loans",
+    "subAccount": "Short-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -24293.26,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "JBL-Cons",
+    "accountNo": "",
+    "accountType": "Short-term Loans",
+    "subAccount": "Short-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": 0.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "House Building Loan",
+    "accountNo": "0100258690804",
+    "accountType": "Long-term Liabilities",
+    "subAccount": "Long-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -14450398.84,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Computer Loan",
+    "accountNo": "0100234233755",
+    "accountType": "Long-term Liabilities",
+    "subAccount": "Long-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -36076.59,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Motor Cycle Loan",
+    "accountNo": "0100270088184",
+    "accountType": "Long-term Liabilities",
+    "subAccount": "Long-term Liabilities",
+    "financialStatement": "Balance Sheet",
+    "currentBalance": -463237.6,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Salary/Wages",
+    "accountNo": "",
+    "accountType": "Employment Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -56030.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bonus",
+    "accountNo": "",
+    "accountType": "Employment Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -56020.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Allowances",
+    "accountNo": "",
+    "accountType": "Employment Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -41711.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Lunch Subsidy",
+    "accountNo": "",
+    "accountType": "Employment Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -5420.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Business Income",
+    "accountNo": "",
+    "accountType": "Business Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Rental Income",
+    "accountNo": "",
+    "accountType": "Business Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Freelance Income",
+    "accountNo": "",
+    "accountType": "Business Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Sales(Hobby)",
+    "accountNo": "",
+    "accountType": "Freelancing / Hobby Trading Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -31020.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Investment Gains(Hobby)",
+    "accountNo": "",
+    "accountType": "Freelancing / Hobby Trading Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Interest Income",
+    "accountNo": "",
+    "accountType": "Investment & Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -45720.31,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Dividend Income",
+    "accountNo": "",
+    "accountType": "Investment & Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Capital Gain",
+    "accountNo": "",
+    "accountType": "Investment & Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 20000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Gifts Received",
+    "accountNo": "",
+    "accountType": "Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Excess Cash",
+    "accountNo": "",
+    "accountType": "Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -929.77,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Other Income",
+    "accountNo": "",
+    "accountType": "Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": -27377.39,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Investment Gains",
+    "accountNo": "",
+    "accountType": "Other Income",
+    "subAccount": "Revenue",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "House Rent",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Children Education",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 600.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Loan EMI",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Insurance Premium(Exp)",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Subscriptions",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Utilities",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 4530.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Children\u2019s Extra-Curricular Expenses",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Wife Personal Allowance",
+    "accountNo": "",
+    "accountType": "Fixed Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 1000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Groceries Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 6965.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Dining Out Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 600.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Healthcare Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 60.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Shopping Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 1350.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Education Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Worship Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 200.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Furniture & Equipment Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 42550.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Home Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 31400.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Other Household Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 1985.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Milk, Fruits ,Vegetables etc. Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 6560.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Meat and Fish Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 4230.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cooking Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 400.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cleaning & Pest Control Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Transportation Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 313.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Fuel Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 700.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "repair and maintenance expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 2300.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Children Other Expenses",
+    "accountNo": "",
+    "accountType": "Household Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 1910.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Delivery Fees(Hobby)",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Business Expenses (Rent, Utility, Salary etc.)",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cost of Goods Sold(Hobby)",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 7000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Cost of Goods Sold(Business)",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Pet Expenses",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Travel Expenses",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 20512.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Hobby Expenses",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 3890.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Gym Expenses",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 4475.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Loss Expenses",
+    "accountNo": "",
+    "accountType": "Business & Hobby Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 3023.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Other Expenses",
+    "accountNo": "",
+    "accountType": "Other Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 14150.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Entertainment Expenses",
+    "accountNo": "",
+    "accountType": "Other Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 9117.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Interest Expenses",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 503.08,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Bank Charges",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 423.95,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "BO Account Maintenance Expense",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 250.03,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "VAT, Taxes and Excise Duties",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 467.11,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Income Tax",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 2000.0,
+    "isCashAccount": false
+  },
+  {
+    "accountTitle": "Benevolent Fund & Others",
+    "accountNo": "",
+    "accountType": "Finance & Banking Expenses",
+    "subAccount": "Expenses",
+    "financialStatement": "Income Statement",
+    "currentBalance": 620.3,
+    "isCashAccount": false
+  }
+]
