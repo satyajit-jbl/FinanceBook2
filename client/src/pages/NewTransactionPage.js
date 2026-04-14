@@ -345,8 +345,10 @@ export default function NewTransactionPage() {
   const totalCr = entries.reduce((s, e) => s + (parseFloat(e.credit) || 0), 0);
   const balanced = Math.abs(totalDr - totalCr) < 0.01 && totalDr > 0;
 
-  const cashReceiveFilter = (a) => CASH_RECEIVE_TYPES.includes(a.accountType) || a.subAccount === 'Revenue';
-  const cashPaymentFilter = (a) => a.subAccount === 'Expenses' || a.subAccount === 'Current Liabilities' || a.subAccount === 'Current Assets';
+  const cashReceiveFilter = (a) => CASH_RECEIVE_TYPES.includes(a.accountType) || a.subAccount === 'Revenue'|| a.subAccount === 'Current Liabilities';
+  const cashPaymentFilter = (a) => a.subAccount === 'Expenses' || a.subAccount === 'Current Liabilities' || a.subAccount === 'Current Assets'||
+  a.subAccount === 'Short-term Liabilities' ||
+  a.subAccount === 'Long-term Liabilities' || a.subAccount === 'Investments'|| a.subAccount === 'Fixed Assets';
 
   if (loading) return <LoadingSpinner />;
 
