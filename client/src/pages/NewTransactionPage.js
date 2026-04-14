@@ -406,7 +406,7 @@ export default function NewTransactionPage() {
             <div className="mb-2 p-2.5 bg-expense-light rounded-lg text-xs text-expense font-medium">
               💸 Dr: Selected Account → Cr: Cash (Auto)
             </div>
-            <label className="label">Expense / Payment Account *</label>
+            <label className="label">Expense / Payment / Deposit Account *</label>
             <AccountSearchSelect accounts={accounts} filter={cashPaymentFilter} value={form.accountId}
               onChange={(id) => set('accountId', id)} placeholder="Search expense or payable…" error={!!errors.accountId} />
             {errors.accountId && <p className="text-red-500 text-xs mt-1">{errors.accountId}</p>}
