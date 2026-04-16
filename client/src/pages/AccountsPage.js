@@ -295,7 +295,7 @@ export default function AccountsPage() {
 
         <div className="flex gap-2 flex-wrap justify-end">
           {/* Seed button — prominent when empty, subtle when accounts exist */}
-          {accounts.length === 0 ? (
+          {/* {accounts.length === 0 ? (
             <button
               onClick={() => { setSeedResult(null); setSeedOpen(true); }}
               className="btn-primary flex items-center gap-2 animate-pulse"
@@ -310,7 +310,7 @@ export default function AccountsPage() {
             >
               🌱 Seed from Excel
             </button>
-          )}
+          )} */}
           <button onClick={openCreate} className="btn-primary">+ Add Account</button>
         </div>
       </div>
