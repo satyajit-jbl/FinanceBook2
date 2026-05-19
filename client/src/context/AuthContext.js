@@ -19,9 +19,12 @@ export function AuthProvider({ children }) {
       setDbUser(data.user);
       return data.user;
     } catch (err) {
-      if (err.status === 404) return null;   // registered in Firebase but not DB yet
-      if (err.status === 401) return null;   // no valid session
-      console.error('fetchDbUser error:', err);
+      // 401 = no session (expected on fresh load / after logout)
+      // 404 = Firebase user exists but not yet in our DB
+      // Both are handled gracefully — just return null
+      if (err.status === 401 || err.status === 404) return null;
+      // Anything else (network error, 500) log it
+      console.error('[AuthContext] fetchDbUser unexpected error:', err);
       return null;
     }
   }, []);

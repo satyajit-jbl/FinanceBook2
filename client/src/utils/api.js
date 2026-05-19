@@ -30,12 +30,22 @@ api.interceptors.request.use(async (config) => {
   return config;
 }, (error) => Promise.reject(error));
 
+// ── Response interceptor ──────────────────────────────────────────
 // Global response error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     const msg    = error.response?.data?.message || error.message || 'An unexpected error occurred';
     const status = error.response?.status;
+
+    // 401 is INTENTIONAL on /auth/me at startup — not a real error.
+    // Suppress it so the browser console stays clean.
+    // AuthContext already handles 401 by setting authMode = 'none'.
+    if (status === 401) {
+      return Promise.reject({ message: msg, status, data: error.response?.data });
+    }
+
+    // Show toast for other error types
 
     if (status === 403) toast.error(msg);
     else if (status === 429) toast.error('Too many requests. Please slow down.');
