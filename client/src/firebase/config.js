@@ -10,6 +10,18 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
+if (
+  !firebaseConfig.apiKey ||
+  firebaseConfig.apiKey.includes('your-') ||
+  firebaseConfig.projectId?.includes('your-')
+) {
+  throw new Error(
+    'Firebase env vars are missing or still placeholders. ' +
+    'Set REACT_APP_FIREBASE_* in client/.env, then stop and restart npm start ' +
+    '(CRA only reads .env at startup — a running dev server keeps old values).'
+  );
+}
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();

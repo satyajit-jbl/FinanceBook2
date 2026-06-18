@@ -66,6 +66,7 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, googleProvider);
       const { data } = await api.post('/auth/google/sync', {
         displayName: result.user.displayName || result.user.email,
+        
       });
       if (!data.user.isApproved) { navigate('/pending'); return; }
       toast.success(`Welcome, ${data.user.displayName}!`);
