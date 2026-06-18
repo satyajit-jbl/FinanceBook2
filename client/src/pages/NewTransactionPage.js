@@ -8,7 +8,7 @@ import Modal from '../components/ui/Modal';
 import AccountSearchSelect from '../components/ui/AccountSearchSelect';
 
 const TABS = [
-  { key: 'cash_receive',           label: '💰 Cash Receive'    },
+  { key: 'cash_receive',           label: '💰 Cash Receive2'    },
   { key: 'cash_payment',           label: '💸 Cash Payment'    },
   { key: 'fund_transfer',          label: '🔄 Fund Transfer'   },
   { key: 'multiple_fund_transfer', label: '⚡ Multiple Transfer'},
