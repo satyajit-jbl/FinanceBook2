@@ -115,12 +115,20 @@ export default function TransactionsPage() {
                   <span className={`badge ${txn.status === 'void' ? 'bg-gray-100 text-gray-500' : 'bg-green-50 text-green-700'}`}>
                     {txn.status === 'void' ? 'Voided' : 'Posted'}
                   </span>
+                  {txn.status !== 'void' && (txn.editHistory?.length > 0 || txn.editedAt) && (
+                    <span className="ml-1 badge bg-amber-50 text-amber-700 text-[10px]">
+                      ✏️ {txn.editHistory?.length || 1}
+                    </span>
+                  )}
                 </td>
                 <td className="table-td">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <button onClick={() => setDetailModal(txn)} className="text-xs text-primary-600 hover:underline font-medium">View</button>
                     {txn.status !== 'void' && (
-                      <button onClick={() => { setVoidModal(txn); setVoidReason(''); }} className="text-xs text-red-500 hover:underline font-medium">Void</button>
+                      <>
+                        <Link to={`/transactions/${txn._id}/edit`} className="text-xs text-amber-600 hover:underline font-medium">Edit</Link>
+                        <button onClick={() => { setVoidModal(txn); setVoidReason(''); }} className="text-xs text-red-500 hover:underline font-medium">Void</button>
+                      </>
                     )}
                   </div>
                 </td>
@@ -148,6 +156,13 @@ export default function TransactionsPage() {
               <div><span className="text-gray-400">Type:</span> <span className={`badge ${txnTypeColor(detailModal.transactionType)}`}>{txnTypeLabel(detailModal.transactionType)}</span></div>
               <div className="col-span-2"><span className="text-gray-400">Description:</span> <strong>{detailModal.description}</strong></div>
               {detailModal.reference && <div className="col-span-2"><span className="text-gray-400">Reference:</span> {detailModal.reference}</div>}
+              {detailModal.editedAt && (
+                <div className="col-span-2 p-2 bg-amber-50 rounded text-amber-800 text-xs">
+                  Edited {detailModal.editHistory?.length || 1} time{(detailModal.editHistory?.length || 1) !== 1 ? 's' : ''}
+                  {' — '}Last: {formatDate(detailModal.editedAt)}
+                  {detailModal.editReason && <> — {detailModal.editReason}</>}
+                </div>
+              )}
               {detailModal.status === 'void' && <div className="col-span-2 p-2 bg-red-50 rounded text-red-700 text-xs">Voided: {detailModal.voidReason}</div>}
             </div>
             <table className="w-full text-sm">
@@ -167,6 +182,24 @@ export default function TransactionsPage() {
                 </tr>
               </tbody>
             </table>
+            {detailModal.status !== 'void' && (
+              <div className="flex justify-end pt-2">
+                <Link to={`/transactions/${detailModal._id}/edit`} className="btn btn-secondary btn-sm">✏️ Edit Transaction</Link>
+              </div>
+            )}
+            {detailModal.editHistory?.length > 0 && (
+              <div className="border-t border-gray-100 pt-3">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Edit History</p>
+                <ul className="space-y-1.5">
+                  {detailModal.editHistory.map((h, i) => (
+                    <li key={h._id || i} className="text-xs text-gray-600 bg-amber-50 rounded px-2 py-1.5">
+                      <span className="font-medium">{formatDate(h.editedAt)}</span>
+                      {h.editReason && <> — {h.editReason}</>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </Modal>

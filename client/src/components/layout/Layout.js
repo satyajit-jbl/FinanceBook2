@@ -15,6 +15,7 @@ const NAV_REPORTS = [
   { to: '/reports/income-statement', icon: '◈', label: 'Income Statement' },
   { to: '/reports/balance-sheet',    icon: '◉', label: 'Balance Sheet'    },
   { to: '/reports/cash-flow',        icon: '↻', label: 'Cash Flow'        },
+  { to: '/reports/audit-trail',     icon: '📋', label: 'Audit Trail'      },
 ];
 const NAV_ADVISOR = [
   { to: '/advisor', icon: '🤖', label: 'AI Advisor' },

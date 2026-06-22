@@ -14,6 +14,7 @@ import TrialBalancePage from './pages/reports/TrialBalancePage';
 import IncomeStatementPage from './pages/reports/IncomeStatementPage';
 import BalanceSheetPage from './pages/reports/BalanceSheetPage';
 import CashFlowPage from './pages/reports/CashFlowPage';
+import AuditTrailPage from './pages/reports/AuditTrailPage';
 import SettingsPage from './pages/SettingsPage';
 import AdminPage from './pages/AdminPage';
 import AdvisorPage from './pages/advisor/AdvisorPage';
@@ -65,12 +66,14 @@ function AppRoutes() {
         <Route path="dashboard"  element={<DashboardPage />} />
         <Route path="transactions"      element={<TransactionsPage />} />
         <Route path="transactions/new"  element={<NewTransactionPage />} />
+        <Route path="transactions/:id/edit" element={<NewTransactionPage />} />
         <Route path="accounts"          element={<AccountsPage />} />
         <Route path="accounts/:id/ledger" element={<LedgerPage />} />
         <Route path="reports/trial-balance"    element={<TrialBalancePage />} />
         <Route path="reports/income-statement" element={<IncomeStatementPage />} />
         <Route path="reports/balance-sheet"    element={<BalanceSheetPage />} />
         <Route path="reports/cash-flow"        element={<CashFlowPage />} />
+        <Route path="reports/audit-trail"      element={<AuditTrailPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="advisor" element={<AdvisorPage />} />
         <Route path="budget" element={<BudgetPage />} />
