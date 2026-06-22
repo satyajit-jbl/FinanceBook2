@@ -30,6 +30,14 @@ export const formatDate = (date) => {
   return new Date(date).toLocaleDateString('en-BD', { year: 'numeric', month: 'short', day: '2-digit' });
 };
 
+export const formatDateTime = (date) => {
+  if (!date) return '—';
+  return new Date(date).toLocaleString('en-BD', {
+    year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  });
+};
+
 export const formatDateInput = (date) => {
   if (!date) return '';
   return new Date(date).toISOString().split('T')[0];

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { today, formatCurrency } from '../utils/format';
 import toast from 'react-hot-toast';
@@ -19,6 +19,52 @@ const CASH_RECEIVE_TYPES = [
   'Investment & Other Income','Other Income','Accounts Receivable (Lending)',
   'Savings Bank Account','DPS Account','Fixed Deposit Account','Savings Certificate',
 ];
+
+const toDateInput = (d) => new Date(d).toISOString().split('T')[0];
+
+function txnToForm(txn, cashAccountId) {
+  const cashId = cashAccountId?.toString();
+  const isCash = (id) => id?.toString() === cashId;
+  const base = {
+    date: toDateInput(txn.date),
+    description: txn.description,
+    reference: txn.reference || '',
+    accountId: '', amount: '', debitAccountId: '', creditAccountId: '',
+  };
+
+  switch (txn.transactionType) {
+    case 'cash_receive': {
+      const line = txn.journalEntries.find(e => !isCash(e.accountId));
+      return { ...base, accountId: line?.accountId || '', amount: String(txn.amount || '') };
+    }
+    case 'cash_payment': {
+      const line = txn.journalEntries.find(e => !isCash(e.accountId));
+      return { ...base, accountId: line?.accountId || '', amount: String(txn.amount || '') };
+    }
+    case 'fund_transfer': {
+      const dr = txn.journalEntries.find(e => e.debit > 0);
+      const cr = txn.journalEntries.find(e => e.credit > 0);
+      return {
+        ...base,
+        debitAccountId: dr?.accountId || '',
+        creditAccountId: cr?.accountId || '',
+        amount: String(txn.amount || ''),
+      };
+    }
+    case 'multiple_fund_transfer':
+      return base;
+    default:
+      return base;
+  }
+}
+
+function txnToEntries(txn) {
+  return txn.journalEntries.map(e => ({
+    accountId: e.accountId,
+    debit:  e.debit  > 0 ? String(e.debit)  : '',
+    credit: e.credit > 0 ? String(e.credit) : '',
+  }));
+}
 
 // ── Insufficient balance modal ─────────────────────────────────────
 function InsufficientBalanceModal({ open, warnings, onCancel, onForce, loading }) {
@@ -112,6 +158,8 @@ function LoadTemplateModal({ open, onClose, templates, onLoad, onDelete }) {
 // ═══════════════════════════════════════════════════════════════════
 export default function NewTransactionPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
   const [searchParams] = useSearchParams();
   const [tab,        setTab]        = useState(searchParams.get('type') || 'cash_receive');
   const [accounts,   setAccounts]   = useState([]);
@@ -119,6 +167,8 @@ export default function NewTransactionPage() {
   const [loading,    setLoading]    = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errors,     setErrors]     = useState({});
+  const [originalJournal, setOriginalJournal] = useState(null);
+  const [editReason, setEditReason] = useState('');
 
   const [form, setForm] = useState({
     date: today(), accountId: '', amount: '', description: '', reference: '',
@@ -141,15 +191,47 @@ export default function NewTransactionPage() {
   const [resaveOpen, setResaveOpen]  = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.get('/accounts'),
-      api.get('/templates'),
-    ]).then(([aRes, tRes]) => {
-      setAccounts(aRes.data.accounts);
-      setTemplates(tRes.data.templates);
-    }).catch(() => toast.error('Failed to load data'))
-    .finally(() => setLoading(false));
-  }, []);
+    const load = async () => {
+      setLoading(true);
+      try {
+        const requests = [api.get('/accounts')];
+        if (isEditMode) requests.push(api.get(`/transactions/${id}`));
+        else requests.push(api.get('/templates'));
+
+        const [aRes, secondRes] = await Promise.all(requests);
+        const accts = aRes.data.accounts;
+        setAccounts(accts);
+
+        if (isEditMode) {
+          const txn = secondRes.data.transaction;
+          if (txn.status === 'void') {
+            toast.error('Voided transactions cannot be edited');
+            navigate('/transactions');
+            return;
+          }
+          const cashAcc = accts.find(a => a.isCashAccount);
+          setTab(txn.transactionType);
+          setForm(txnToForm(txn, cashAcc?._id));
+          if (txn.transactionType === 'multiple_fund_transfer') {
+            setEntries(txnToEntries(txn));
+          }
+          setOriginalJournal(txn.journalEntries.map(e => ({
+            accountId: e.accountId,
+            debit: e.debit,
+            credit: e.credit,
+          })));
+        } else {
+          setTemplates(secondRes.data.templates);
+        }
+      } catch {
+        toast.error(isEditMode ? 'Failed to load transaction' : 'Failed to load data');
+        if (isEditMode) navigate('/transactions');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [id, isEditMode, navigate]);
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })); };
   const accountsMap = accounts.reduce((m, a) => { m[a._id] = a; return m; }, {});
@@ -262,10 +344,22 @@ export default function NewTransactionPage() {
 
   const checkBalanceWarnings = (lines) => {
     const warnings = [];
-    for (const line of lines) {
-      const acc = accountsMap[line.accountId];
+    const lineKey = (l) => l.accountId?.toString();
+    const accountIds = new Set(lines.map(lineKey));
+    if (originalJournal) originalJournal.forEach(l => accountIds.add(lineKey(l)));
+
+    for (const accountId of accountIds) {
+      const acc = accountsMap[accountId] || accounts.find(a => a._id?.toString() === accountId);
       if (!acc) continue;
-      const newBal = acc.currentBalance + (line.debit - line.credit);
+
+      const sumNet = (entries) => entries
+        .filter(l => lineKey(l) === accountId)
+        .reduce((s, l) => s + ((parseFloat(l.debit) || 0) - (parseFloat(l.credit) || 0)), 0);
+
+      const oldNet = originalJournal ? sumNet(originalJournal) : 0;
+      const newNet = sumNet(lines);
+      const newBal = acc.currentBalance + (newNet - oldNet);
+
       const isAsset = ['Current Assets','Investments','Fixed Assets'].includes(acc.subAccount);
       const isLiabEq = ['Current Liabilities','Short-term Liabilities','Long-term Liabilities','Equity','Revenue'].includes(acc.subAccount);
       if (isAsset  && newBal < 0) warnings.push(`"${acc.accountTitle}" (${acc.subAccount}) will become (${formatCurrency(-newBal)}) — assets should not be negative.`);
@@ -275,6 +369,21 @@ export default function NewTransactionPage() {
   };
 
   // ── Submit ───────────────────────────────────────────────────────
+  const buildBody = () => {
+    const amt = parseFloat(form.amount);
+    if (tab === 'cash_receive' || tab === 'cash_payment') {
+      return { date: form.date, accountId: form.accountId, amount: amt, description: form.description, reference: form.reference };
+    }
+    if (tab === 'fund_transfer') {
+      return { date: form.date, debitAccountId: form.debitAccountId, creditAccountId: form.creditAccountId, amount: amt, description: form.description, reference: form.reference };
+    }
+    const validE = entries.filter(e => e.accountId && (parseFloat(e.debit) > 0 || parseFloat(e.credit) > 0));
+    return {
+      date: form.date, description: form.description, reference: form.reference,
+      entries: validE.map(e => ({ accountId: e.accountId, debit: parseFloat(e.debit) || 0, credit: parseFloat(e.credit) || 0 })),
+    };
+  };
+
   const submit = async (force = false) => {
     let valid = false;
     if (tab === 'cash_receive' || tab === 'cash_payment') valid = validateSimple();
@@ -282,45 +391,50 @@ export default function NewTransactionPage() {
     else valid = validateMultiple();
     if (!valid) return;
 
-    let endpoint, body;
-    const amt = parseFloat(form.amount);
-    if (tab === 'cash_receive') {
-      endpoint = '/transactions/cash-receive';
-      body = { date: form.date, accountId: form.accountId, amount: amt, description: form.description, reference: form.reference };
-    } else if (tab === 'cash_payment') {
-      endpoint = '/transactions/cash-payment';
-      body = { date: form.date, accountId: form.accountId, amount: amt, description: form.description, reference: form.reference };
-    } else if (tab === 'fund_transfer') {
-      endpoint = '/transactions/fund-transfer';
-      body = { date: form.date, debitAccountId: form.debitAccountId, creditAccountId: form.creditAccountId, amount: amt, description: form.description, reference: form.reference };
-    } else {
-      endpoint = '/transactions/multiple-fund-transfer';
-      const validE = entries.filter(e => e.accountId && (parseFloat(e.debit)>0 || parseFloat(e.credit)>0));
-      body = { date: form.date, description: form.description, reference: form.reference,
-        entries: validE.map(e => ({ accountId: e.accountId, debit: parseFloat(e.debit)||0, credit: parseFloat(e.credit)||0 })) };
+    if (isEditMode && !editReason.trim()) {
+      setErrors({ editReason: 'Edit reason is required (audit trail)' });
+      toast.error('Please enter a reason for this edit');
+      return;
+    }
+
+    const body = buildBody();
+    if (isEditMode) body.editReason = editReason.trim();
+
+    let endpoint;
+    if (!isEditMode) {
+      if (tab === 'cash_receive') endpoint = '/transactions/cash-receive';
+      else if (tab === 'cash_payment') endpoint = '/transactions/cash-payment';
+      else if (tab === 'fund_transfer') endpoint = '/transactions/fund-transfer';
+      else endpoint = '/transactions/multiple-fund-transfer';
     }
 
     if (!force) {
       const warnings = checkBalanceWarnings(buildJournalLines());
-      if (warnings.length > 0) { setWarnMsgs(warnings); setPendingPayload({ endpoint, body }); setWarnOpen(true); return; }
+      if (warnings.length > 0) {
+        setWarnMsgs(warnings);
+        setPendingPayload(isEditMode ? { mode: 'edit', body } : { mode: 'create', endpoint, body });
+        setWarnOpen(true);
+        return;
+      }
     }
 
     setSubmitting(true);
     try {
-      await api.post(endpoint, body);
-      toast.success('Transaction recorded!');
-
-      // For multiple transfer: offer to save or resave template
-      if (tab === 'multiple_fund_transfer') {
-        if (lastTemplateId) {
-          setResaveOpen(true); // offer to update existing template
-        } else {
-          setSaveOpen(true); // offer to save new template
-        }
-      } else {
+      if (isEditMode) {
+        await api.put(`/transactions/${id}`, body);
+        toast.success('Transaction updated!');
         navigate('/transactions');
+      } else {
+        await api.post(endpoint, body);
+        toast.success('Transaction recorded!');
+        if (tab === 'multiple_fund_transfer') {
+          if (lastTemplateId) setResaveOpen(true);
+          else setSaveOpen(true);
+        } else {
+          navigate('/transactions');
+        }
       }
-    } catch (err) { toast.error(err.message || 'Transaction failed'); }
+    } catch (err) { toast.error(err.message || (isEditMode ? 'Update failed' : 'Transaction failed')); }
     finally { setSubmitting(false); }
   };
 
@@ -328,11 +442,18 @@ export default function NewTransactionPage() {
     if (!pendingPayload) return;
     setSubmitting(true);
     try {
-      await api.post(pendingPayload.endpoint, pendingPayload.body);
-      toast.success('Transaction recorded (forced).');
-      setWarnOpen(false);
-      if (tab === 'multiple_fund_transfer') setSaveOpen(true);
-      else navigate('/transactions');
+      if (pendingPayload.mode === 'edit') {
+        await api.put(`/transactions/${id}`, pendingPayload.body);
+        toast.success('Transaction updated (forced).');
+        setWarnOpen(false);
+        navigate('/transactions');
+      } else {
+        await api.post(pendingPayload.endpoint, pendingPayload.body);
+        toast.success('Transaction recorded (forced).');
+        setWarnOpen(false);
+        if (tab === 'multiple_fund_transfer') setSaveOpen(true);
+        else navigate('/transactions');
+      }
     } catch (err) { toast.error(err.message || 'Transaction failed'); }
     finally { setSubmitting(false); }
   };
@@ -356,22 +477,31 @@ export default function NewTransactionPage() {
     <div className="max-w-2xl mx-auto space-y-4 md:space-y-5">
       <div className="page-header">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900">New Transaction</h1>
-          <p className="text-gray-400 text-xs md:text-sm">Double-entry journal entry</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+            {isEditMode ? 'Edit Transaction' : 'New Transaction'}
+          </h1>
+          <p className="text-gray-400 text-xs md:text-sm">
+            {isEditMode ? 'Modify posted entry — original journal is reversed and re-posted' : 'Double-entry journal entry'}
+          </p>
         </div>
         <button onClick={() => navigate('/transactions')} className="btn btn-secondary btn-sm">← Back</button>
       </div>
 
-      {/* Type tabs */}
-      <div className="card p-1 grid grid-cols-2 md:grid-cols-4 gap-1">
+      {/* Type tabs — locked in edit mode (bank software does not allow type change) */}
+      <div className={`card p-1 grid grid-cols-2 md:grid-cols-4 gap-1 ${isEditMode ? 'opacity-80 pointer-events-none' : ''}`}>
         {TABS.map(t => (
-          <button key={t.key} onClick={() => { setTab(t.key); setErrors({}); }}
+          <button key={t.key} onClick={() => { if (!isEditMode) { setTab(t.key); setErrors({}); } }}
             className={`py-2.5 px-2 rounded-lg text-xs font-semibold transition-all
               ${tab === t.key ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50'}`}>
             {t.label}
           </button>
         ))}
       </div>
+      {isEditMode && (
+        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          Transaction type cannot be changed after posting. Edit date, accounts, amounts, and description only.
+        </p>
+      )}
 
       {/* Form */}
       <div className="card p-4 md:p-5 space-y-4">
@@ -450,6 +580,17 @@ export default function NewTransactionPage() {
             placeholder="Transaction description" value={form.description} onChange={e => set('description', e.target.value)} maxLength={500} />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
         </div>
+
+        {isEditMode && (
+          <div>
+            <label className="label">Reason for Edit *</label>
+            <textarea className={`input resize-none ${errors.editReason ? 'input-error' : ''}`} rows={2}
+              placeholder="e.g. Corrected amount, wrong account selected…"
+              value={editReason} onChange={e => { setEditReason(e.target.value); setErrors(er => ({ ...er, editReason: '' })); }} />
+            {errors.editReason && <p className="text-red-500 text-xs mt-1">{errors.editReason}</p>}
+            <p className="text-xs text-gray-400 mt-1">Required for audit trail (standard in accounting systems).</p>
+          </div>
+        )}
       </div>
 
       {/* Multiple Fund Transfer — journal entry grid */}
@@ -461,10 +602,12 @@ export default function NewTransactionPage() {
               <span className={`badge ${balanced ? 'bg-income-light text-income' : 'bg-red-50 text-red-600'}`}>
                 {balanced ? '✓ Balanced' : `Dr:${formatCurrency(totalDr)} Cr:${formatCurrency(totalCr)}`}
               </span>
-              {/* Template buttons */}
+              {/* Template buttons — create mode only */}
+              {!isEditMode && (
               <button onClick={() => setLoadOpen(true)} className="btn btn-secondary btn-sm" title="Load template">
                 📂 <span className="hidden sm:inline">Templates</span>
               </button>
+              )}
             </div>
           </div>
 
@@ -520,7 +663,7 @@ export default function NewTransactionPage() {
       <div className="flex gap-3">
         <button onClick={() => navigate('/transactions')} className="btn btn-secondary flex-1 justify-center" disabled={submitting}>Cancel</button>
         <button onClick={() => submit(false)} className="btn-primary flex-1 justify-center py-2.5 md:py-3" disabled={submitting}>
-          {submitting ? 'Recording…' : '✓ Record Transaction'}
+          {submitting ? (isEditMode ? 'Saving…' : 'Recording…') : (isEditMode ? '✓ Save Changes' : '✓ Record Transaction')}
         </button>
       </div>
 
