@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { requireApproved } = require('../middleware/auth');
 const Account = require('../models/Account');
+const Transaction = require('../models/Transaction');
+const TransactionTemplate = require('../models/TransactionTemplate');
+const Budget = require('../models/Budget');
 const { AppError } = require('../middleware/errorHandler');
+const {
+  parseCsvText, validateImportRows, accountsToCsv, TEMPLATE_CSV,
+} = require('../utils/accountImport');
 const SEED_ACCOUNTS = require('../data/seed_accounts.json');
 
 // GET all accounts
@@ -84,6 +90,164 @@ router.get('/cash-status', requireApproved, async (req, res, next) => {
   try {
     const cashAccount = await Account.findOne({ userId: req.user.uid, isCashAccount: true, isActive: true });
     res.json({ success: true, hasCashAccount: !!cashAccount, cashAccount: cashAccount || null });
+  } catch (err) { next(err); }
+});
+
+// ── CSV import / export ───────────────────────────────────────────────────────
+
+router.get('/import/template', requireApproved, (req, res) => {
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename="chart-of-accounts-template.csv"');
+  res.send(TEMPLATE_CSV);
+});
+
+// Full sample from built-in seed data (145 accounts) — for migration from legacy seed
+router.get('/import/template/full', requireApproved, (req, res) => {
+  const csv = accountsToCsv(SEED_ACCOUNTS);
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename="chart-of-accounts-full-sample.csv"');
+  res.send(csv);
+});
+
+router.get('/export/csv', requireApproved, async (req, res, next) => {
+  try {
+    const accounts = await Account.find({ userId: req.user.uid, isActive: true })
+      .sort({ subAccount: 1, accountTitle: 1 })
+      .lean();
+    const csv = accountsToCsv(accounts);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="chart-of-accounts.csv"');
+    res.send(csv);
+  } catch (err) { next(err); }
+});
+
+router.post('/import/preview', requireApproved, async (req, res, next) => {
+  try {
+    const { csv } = req.body;
+    if (!csv?.trim()) throw new AppError('CSV content is required', 400);
+
+    const rawRows = parseCsvText(csv);
+    const validation = validateImportRows(rawRows);
+    const txnCount = await Transaction.countDocuments({ userId: req.user.uid });
+    const accountCount = await Account.countDocuments({ userId: req.user.uid, isActive: true });
+
+    res.json({
+      success: true,
+      ...validation,
+      warnings: [
+        ...(validation.cashCount === 0 ? ['No Cash Account marked — Cash Receive/Payment will not work until one account has isCashAccount=true'] : []),
+        ...(!validation.balanced ? [`Grand total is ${validation.grandTotal} — should be 0 for a balanced trial balance`] : []),
+      ],
+      canReplace: txnCount === 0,
+      existingAccountCount: accountCount,
+      transactionCount: txnCount,
+    });
+  } catch (err) { next(err); }
+});
+
+router.post('/import', requireApproved, async (req, res, next) => {
+  try {
+    const { csv, mode = 'replace', forceUnbalanced = false } = req.body;
+    if (!csv?.trim()) throw new AppError('CSV content is required', 400);
+    if (!['replace', 'merge'].includes(mode)) throw new AppError('mode must be "replace" or "merge"', 400);
+
+    const rawRows = parseCsvText(csv);
+    const validation = validateImportRows(rawRows);
+    if (validation.invalidCount > 0) {
+      throw new AppError(`${validation.invalidCount} row(s) have errors — fix the CSV and try again`, 400);
+    }
+    if (!validation.balanced && !forceUnbalanced) {
+      throw new AppError(`Trial balance does not sum to zero (total: ${validation.grandTotal}). Check balances or confirm import anyway.`, 400);
+    }
+    if (validation.cashCount > 1) {
+      throw new AppError('Only one account can be marked as the Cash Account', 400);
+    }
+
+    const userId = req.user.uid;
+    let removed = 0;
+    let skipped = 0;
+
+    if (mode === 'replace') {
+      const txnCount = await Transaction.countDocuments({ userId });
+      if (txnCount > 0) {
+        throw new AppError(
+          'Cannot replace all accounts while transactions exist. Export your data, void transactions, or use "Add missing only" mode.',
+          409
+        );
+      }
+      const del = await Account.deleteMany({ userId });
+      removed = del.deletedCount || 0;
+      await TransactionTemplate.deleteMany({ userId });
+      await Budget.deleteMany({ userId });
+    }
+
+    const existingTitles = new Set();
+    if (mode === 'merge') {
+      const existing = await Account.find({ userId }, 'accountTitle').lean();
+      existing.forEach(a => existingTitles.add(a.accountTitle.trim().toLowerCase()));
+    }
+
+    const cashAlreadyMarked = mode === 'merge'
+      ? await Account.findOne({ userId, isCashAccount: true, isActive: true })
+      : null;
+
+    const toInsert = [];
+    for (const row of validation.validRows) {
+      const titleKey = row.accountTitle.toLowerCase();
+      if (mode === 'merge' && existingTitles.has(titleKey)) {
+        skipped++;
+        continue;
+      }
+
+      let isCash = row.isCashAccount;
+      if (mode === 'merge' && isCash && cashAlreadyMarked) isCash = false;
+
+      toInsert.push({
+        userId,
+        accountTitle:       row.accountTitle,
+        accountNo:          row.accountNo,
+        accountType:        row.accountType,
+        subAccount:         row.subAccount,
+        financialStatement: row.financialStatement,
+        openingBalance:     row.balance,
+        currentBalance:     row.balance,
+        isCashAccount:      isCash,
+        isActive:           true,
+      });
+    }
+
+    if (!toInsert.length) {
+      return res.json({
+        success: true,
+        inserted: 0,
+        skipped,
+        removed,
+        total: await Account.countDocuments({ userId, isActive: true }),
+        grandTotal: 0,
+        balanced: true,
+        message: mode === 'merge'
+          ? 'All accounts in the CSV already exist — nothing was added.'
+          : 'No accounts to import.',
+      });
+    }
+
+    await Account.insertMany(toInsert, { ordered: false });
+
+    const all = await Account.find({ userId, isActive: true }).lean();
+    const grandTotal = all.reduce((s, a) => s + (a.currentBalance || 0), 0);
+
+    res.status(201).json({
+      success: true,
+      inserted: toInsert.length,
+      skipped,
+      removed,
+      total: all.length,
+      grandTotal: Math.round(grandTotal * 100) / 100,
+      balanced: Math.abs(grandTotal) < 1,
+      message: mode === 'replace'
+        ? `Replaced chart of accounts with ${toInsert.length} account(s).`
+        : `Imported ${toInsert.length} account(s)${skipped ? `, skipped ${skipped} existing` : ''}.`,
+    });
   } catch (err) { next(err); }
 });
 

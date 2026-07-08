@@ -6,6 +6,8 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 import EmptyState from '../components/ui/EmptyState';
 import Modal from '../components/ui/Modal';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
+import ImportAccountsModal from '../components/accounts/ImportAccountsModal';
+import { downloadTextFile } from '../utils/fileDownload';
 import toast from 'react-hot-toast';
 
 const TYPE_TO_SUB = {
@@ -66,79 +68,6 @@ const ACCOUNT_TYPES_GROUPED = [
 const EMPTY_FORM = { accountTitle: '', accountNo: '', accountType: '', subAccount: '', financialStatement: '', isCashAccount: false };
 const SUB_ORDER = ['Current Assets', 'Investments', 'Fixed Assets', 'Current Liabilities', 'Short-term Liabilities', 'Long-term Liabilities', 'Equity', 'Revenue', 'Expenses'];
 
-// ── Seed confirmation modal
-function SeedModal({ open, onClose, onConfirm, loading, result }) {
-  return (
-    <Modal open={open} onClose={!loading ? onClose : undefined} title="Seed Chart of Accounts" size="md">
-      {result ? (
-        // Post-seed result screen
-        <div className="space-y-4">
-          <div className={`p-4 rounded-xl border-2 ${result.balanced ? 'bg-income-light border-income/40' : 'bg-warning-light border-warning/40'}`}>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">{result.balanced ? '✅' : '⚠️'}</span>
-              <p className="font-bold text-gray-900">{result.message}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3 mt-3 text-sm">
-              <div className="bg-white rounded-lg p-3 text-center">
-                <p className="text-gray-400 text-xs">Accounts Created</p>
-                <p className="font-bold text-2xl text-primary-700">{result.inserted}</p>
-              </div>
-              <div className="bg-white rounded-lg p-3 text-center">
-                <p className="text-gray-400 text-xs">Total Accounts</p>
-                <p className="font-bold text-2xl text-gray-800">{result.total}</p>
-              </div>
-              <div className="bg-white rounded-lg p-3 text-center">
-                <p className="text-gray-400 text-xs">Skipped (existing)</p>
-                <p className="font-bold text-2xl text-gray-500">{result.skipped}</p>
-              </div>
-              <div className={`rounded-lg p-3 text-center ${result.balanced ? 'bg-income-light' : 'bg-warning-light'}`}>
-                <p className="text-gray-400 text-xs">Grand Total</p>
-                <p className={`font-bold text-lg font-mono ${result.balanced ? 'text-income' : 'text-warning'}`}>
-                  {result.grandTotal === 0 ? '0.00 ✓' : result.grandTotal.toFixed(2)}
-                </p>
-              </div>
-            </div>
-          </div>
-          <p className="text-xs text-gray-400 text-center">
-            💡 <strong>Cash in Hand</strong> is marked as the Cash Account. The Trial Balance grand total should be zero.
-          </p>
-          <button className="btn-primary w-full justify-center" onClick={onClose}>Done</button>
-        </div>
-      ) : (
-        // Pre-seed confirmation screen
-        <div className="space-y-4">
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800">
-            <p className="font-bold mb-2">📊 This will seed 145 accounts from the Excel file:</p>
-            <ul className="space-y-1 text-xs list-disc list-inside">
-              <li>Opening balances loaded from the Trial Balance</li>
-              <li><strong>Cash in Hand</strong> will be marked as the primary Cash Account</li>
-              <li>Accounts already existing (by title) will be <strong>skipped</strong></li>
-              <li>Grand total of all balances = 0 (accounting identity)</li>
-            </ul>
-          </div>
-          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
-            ⚠️ If you already have accounts, this will only add missing ones — no existing data will be overwritten.
-          </div>
-          <div className="flex gap-3">
-            <button className="btn btn-secondary flex-1 justify-center" onClick={onClose} disabled={loading}>Cancel</button>
-            <button className="btn-primary flex-1 justify-center" onClick={onConfirm} disabled={loading}>
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                  </svg>
-                  Seeding...
-                </span>
-              ) : '🌱 Seed 145 Accounts'}
-            </button>
-          </div>
-        </div>
-      )}
-    </Modal>
-  );
-}
-
 export default function AccountsPage() {
   const [accounts, setAccounts]     = useState([]);
   const [loading, setLoading]       = useState(true);
@@ -154,10 +83,8 @@ export default function AccountsPage() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting]     = useState(false);
 
-  // Seed modal state
-  const [seedOpen, setSeedOpen]     = useState(false);
-  const [seedLoading, setSeedLoading] = useState(false);
-  const [seedResult, setSeedResult] = useState(null);
+  // CSV import modal
+  const [importOpen, setImportOpen] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -174,20 +101,15 @@ export default function AccountsPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  // ── Seed handler
-  const handleSeed = async () => {
-    setSeedLoading(true);
+  const handleExportCsv = async () => {
     try {
-      const { data } = await api.post('/accounts/seed');
-      setSeedResult(data);
-      await load(); // refresh list
+      const { data } = await api.get('/accounts/export/csv', { responseType: 'text' });
+      downloadTextFile('chart-of-accounts.csv', data);
+      toast.success('Accounts exported');
     } catch (err) {
-      toast.error(err.message || 'Seed failed');
-      setSeedOpen(false);
-    } finally { setSeedLoading(false); }
+      toast.error(err.message || 'Export failed');
+    }
   };
-
-  const closeSeedModal = () => { setSeedOpen(false); setSeedResult(null); };
 
   // ── Form helpers
   const openCreate = () => { setEditAccount(null); setForm(EMPTY_FORM); setFormErrors({}); setModalOpen(true); };
@@ -294,23 +216,22 @@ export default function AccountsPage() {
         </div>
 
         <div className="flex gap-2 flex-wrap justify-end">
-          {/* Seed button — prominent when empty, subtle when accounts exist */}
-          {/* {accounts.length === 0 ? (
+          {accounts.length > 0 && (
             <button
-              onClick={() => { setSeedResult(null); setSeedOpen(true); }}
-              className="btn-primary flex items-center gap-2 animate-pulse"
-            >
-              🌱 Seed from Excel
-            </button>
-          ) : (
-            <button
-              onClick={() => { setSeedResult(null); setSeedOpen(true); }}
+              onClick={handleExportCsv}
               className="btn btn-secondary flex items-center gap-2"
-              title="Import Chart of Accounts from Excel (145 accounts with opening balances)"
+              title="Download current accounts as CSV"
             >
-              🌱 Seed from Excel
+              ⬇ Export CSV
             </button>
-          )} */}
+          )}
+          <button
+            onClick={() => setImportOpen(true)}
+            className={accounts.length === 0 ? 'btn-primary flex items-center gap-2 animate-pulse' : 'btn btn-secondary flex items-center gap-2'}
+            title="Import accounts and opening balances from a CSV file"
+          >
+            📄 Import CSV
+          </button>
           <button onClick={openCreate} className="btn-primary">+ Add Account</button>
         </div>
       </div>
@@ -320,15 +241,12 @@ export default function AccountsPage() {
         <div className="card p-8 text-center border-2 border-dashed border-primary-200 bg-primary-50/30">
           <div className="text-5xl mb-3">📊</div>
           <h3 className="text-lg font-bold text-gray-800 mb-2">No accounts yet</h3>
-          <p className="text-gray-500 text-sm mb-5">
-            Get started instantly by seeding the Chart of Accounts from the Excel file —
-            145 accounts with opening balances, all balanced to zero.
+          <p className="text-gray-500 text-sm mb-5 max-w-md mx-auto">
+            Import your chart of accounts from a CSV file — include account names, categories,
+            and opening balances so you can start with your existing books.
           </p>
-          <button
-            onClick={() => { setSeedResult(null); setSeedOpen(true); }}
-            className="btn-primary mx-auto"
-          >
-            🌱 Seed Chart of Accounts from Excel
+          <button onClick={() => setImportOpen(true)} className="btn-primary mx-auto">
+            📄 Import Chart of Accounts (CSV)
           </button>
         </div>
       )}
@@ -533,8 +451,8 @@ export default function AccountsPage() {
 
           {!editAccount && (
             <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-700">
-              💡 New accounts start with a zero balance. To set an opening balance,
-              use a <strong>Multiple Fund Transfer</strong> transaction (Dr asset account, Cr Opening Capital).
+              💡 New accounts start with a zero balance. To load opening balances in bulk,
+              use <strong>Import CSV</strong> on the Chart of Accounts page.
             </div>
           )}
 
@@ -549,13 +467,12 @@ export default function AccountsPage() {
         </div>
       </Modal>
 
-      {/* ── Seed Modal ── */}
-      <SeedModal
-        open={seedOpen}
-        onClose={closeSeedModal}
-        onConfirm={handleSeed}
-        loading={seedLoading}
-        result={seedResult}
+      {/* ── CSV Import Modal ── */}
+      <ImportAccountsModal
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onSuccess={load}
+        hasAccounts={accounts.length > 0}
       />
 
       {/* ── Delete Confirm ── */}
