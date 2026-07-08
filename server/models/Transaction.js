@@ -7,6 +7,12 @@ const journalLineSchema = new mongoose.Schema({
   credit: { type: Number, default: 0, min: 0 },
 }, { _id: false });
 
+const editHistorySchema = new mongoose.Schema({
+  editedAt: { type: Date, required: true, default: Date.now },
+  editedBy: { type: String, required: true }, // uid
+  editReason: { type: String, required: true, maxlength: 500 },
+}, { _id: false });
+
 const transactionSchema = new mongoose.Schema({
   userId: { type: String, required: true, index: true },
   transactionType: {
@@ -35,6 +41,10 @@ const transactionSchema = new mongoose.Schema({
   voidedAt: { type: Date },
   voidedBy: { type: String },
   voidReason: { type: String },
+  editedAt: { type: Date },
+  editedBy: { type: String },
+  editReason: { type: String },
+  editHistory: { type: [editHistorySchema], default: [] },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

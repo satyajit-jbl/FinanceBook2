@@ -31,8 +31,10 @@ async function applyJournalEntries(userId, journalEntries, session, multiplier =
   }
 }
 
-async function getCashAccount(userId) {
-  const cash = await Account.findOne({ userId, isCashAccount: true, isActive: true });
+async function getCashAccount(userId, session) {
+  const q = Account.findOne({ userId, isCashAccount: true, isActive: true });
+  if (session) q.session(session);
+  const cash = await q;
   if (!cash) throw new AppError('No cash account configured. Go to Chart of Accounts and mark one account as "Cash Account".', 400);
   return cash;
 }
@@ -81,7 +83,7 @@ router.post('/cash-receive', requireApproved, async (req, res, next) => {
     if (!amount || parseFloat(amount) <= 0) throw new AppError('Amount must be greater than zero');
     if (!description?.trim())              throw new AppError('Description is required');
 
-    const cashAcc   = await getCashAccount(req.user.uid);
+    const cashAcc   = await getCashAccount(req.user.uid, session);
     const incomeAcc = await Account.findOne({ _id: accountId, userId: req.user.uid, isActive: true }).session(session);
     if (!incomeAcc) throw new AppError('Selected account not found');
 
@@ -117,7 +119,7 @@ router.post('/cash-payment', requireApproved, async (req, res, next) => {
     if (!amount || parseFloat(amount) <= 0) throw new AppError('Amount must be greater than zero');
     if (!description?.trim())              throw new AppError('Description is required');
 
-    const cashAcc    = await getCashAccount(req.user.uid);
+    const cashAcc    = await getCashAccount(req.user.uid, session);
     const expenseAcc = await Account.findOne({ _id: accountId, userId: req.user.uid, isActive: true }).session(session);
     if (!expenseAcc) throw new AppError('Selected account not found');
 
@@ -222,6 +224,134 @@ router.post('/multiple-fund-transfer', requireApproved, async (req, res, next) =
     res.status(201).json({ success: true, transaction: txn });
   } catch (err) { await session.abortTransaction(); next(err); }
   finally { session.endSession(); }
+});
+
+// ── Edit/update a posted transaction (reverse + re-post) ──────────────────────
+router.put('/:id', requireApproved, async (req, res, next) => {
+  const mongoose = require('mongoose');
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const { editReason } = req.body;
+    if (!editReason?.trim()) throw new AppError('Edit reason is required', 400);
+
+    const txn = await Transaction.findOne({ _id: req.params.id, userId: req.user.uid }).session(session);
+    if (!txn) throw new AppError('Transaction not found', 404);
+    if (txn.status === 'void') throw new AppError('Voided transactions cannot be edited', 400);
+
+    // Reverse existing journal entries
+    await applyJournalEntries(req.user.uid, txn.journalEntries, session, -1);
+
+    const type = txn.transactionType; // locked: cannot change type on edit
+    const date = req.body.date;
+    const description = req.body.description;
+    const reference = req.body.reference;
+
+    if (!date) throw new AppError('Date is required', 400);
+    if (!description?.trim()) throw new AppError('Description is required', 400);
+
+    let journalEntries = [];
+    let amount = undefined;
+    let totalAmount = 0;
+
+    if (type === 'cash_receive' || type === 'cash_payment') {
+      const { accountId, amount: rawAmount } = req.body;
+      if (!accountId) throw new AppError('Account is required', 400);
+      if (!rawAmount || parseFloat(rawAmount) <= 0) throw new AppError('Amount must be greater than zero', 400);
+
+      const cashAcc = await getCashAccount(req.user.uid, session);
+      const otherAcc = await Account.findOne({ _id: accountId, userId: req.user.uid, isActive: true }).session(session);
+      if (!otherAcc) throw new AppError('Selected account not found', 400);
+
+      amount = parseFloat(rawAmount);
+      if (type === 'cash_receive') {
+        journalEntries = [
+          { accountId: cashAcc._id,  accountTitle: cashAcc.accountTitle,  debit: amount, credit: 0 },
+          { accountId: otherAcc._id, accountTitle: otherAcc.accountTitle, debit: 0,      credit: amount },
+        ];
+      } else {
+        journalEntries = [
+          { accountId: otherAcc._id, accountTitle: otherAcc.accountTitle, debit: amount, credit: 0 },
+          { accountId: cashAcc._id,  accountTitle: cashAcc.accountTitle,  debit: 0,      credit: amount },
+        ];
+      }
+      totalAmount = amount;
+    } else if (type === 'fund_transfer') {
+      const { debitAccountId, creditAccountId, amount: rawAmount } = req.body;
+      if (!debitAccountId) throw new AppError('Debit account is required', 400);
+      if (!creditAccountId) throw new AppError('Credit account is required', 400);
+      if (debitAccountId === creditAccountId) throw new AppError('Debit and credit accounts must be different', 400);
+      if (!rawAmount || parseFloat(rawAmount) <= 0) throw new AppError('Amount must be greater than zero', 400);
+
+      const debitAcc  = await Account.findOne({ _id: debitAccountId,  userId: req.user.uid, isActive: true }).session(session);
+      const creditAcc = await Account.findOne({ _id: creditAccountId, userId: req.user.uid, isActive: true }).session(session);
+      if (!debitAcc)  throw new AppError('Debit account not found', 400);
+      if (!creditAcc) throw new AppError('Credit account not found', 400);
+
+      amount = parseFloat(rawAmount);
+      journalEntries = [
+        { accountId: debitAcc._id,  accountTitle: debitAcc.accountTitle,  debit: amount, credit: 0 },
+        { accountId: creditAcc._id, accountTitle: creditAcc.accountTitle, debit: 0,      credit: amount },
+      ];
+      totalAmount = amount;
+    } else if (type === 'multiple_fund_transfer') {
+      const { entries } = req.body;
+      if (!Array.isArray(entries) || entries.length < 2)
+        throw new AppError('At least 2 journal entry lines are required', 400);
+
+      const lines = [];
+      for (const entry of entries) {
+        const dr = parseFloat(entry.debit) || 0;
+        const cr = parseFloat(entry.credit) || 0;
+        if (!entry.accountId) continue;
+        if (dr === 0 && cr === 0) continue;
+        if (dr > 0 && cr > 0) throw new AppError('Each line can only have a Debit OR a Credit, not both', 400);
+
+        const acc = await Account.findOne({ _id: entry.accountId, userId: req.user.uid, isActive: true }).session(session);
+        if (!acc) throw new AppError('Account not found', 400);
+        lines.push({ accountId: acc._id, accountTitle: acc.accountTitle, debit: dr, credit: cr });
+      }
+
+      if (lines.length < 2) throw new AppError('At least 2 journal entry lines are required', 400);
+      const totalDr = lines.reduce((s, e) => s + (e.debit || 0), 0);
+      const totalCr = lines.reduce((s, e) => s + (e.credit || 0), 0);
+      if (Math.abs(totalDr - totalCr) > 0.01)
+        throw new AppError('Total Debits must equal Total Credits', 400);
+      if (totalDr === 0) throw new AppError('Total amount cannot be zero', 400);
+
+      journalEntries = lines;
+      totalAmount = totalDr;
+      amount = undefined;
+    } else {
+      throw new AppError('Unsupported transaction type', 400);
+    }
+
+    // Apply new journal entries
+    await applyJournalEntries(req.user.uid, journalEntries, session, 1);
+
+    // Update txn fields
+    txn.date = new Date(date);
+    txn.description = description.trim();
+    txn.reference = reference?.trim() || '';
+    txn.amount = amount;
+    txn.journalEntries = journalEntries;
+    txn.totalAmount = totalAmount;
+    txn.editedAt = new Date();
+    txn.editedBy = req.user.uid;
+    txn.editReason = editReason.trim();
+    txn.editHistory = txn.editHistory || [];
+    txn.editHistory.push({ editedAt: txn.editedAt, editedBy: txn.editedBy, editReason: txn.editReason });
+
+    await txn.save({ session });
+
+    await session.commitTransaction();
+    res.json({ success: true, transaction: txn });
+  } catch (err) {
+    await session.abortTransaction();
+    next(err);
+  } finally {
+    session.endSession();
+  }
 });
 
 // ── Void a transaction (reverse all entries) ──────────────────────────────────
